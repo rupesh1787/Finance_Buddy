@@ -1,6 +1,19 @@
-import Database from "better-sqlite3";
 import fs from "fs";
 import path from "path";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+
+let Database: any;
+let db: any;
+
+try {
+  Database = require("better-sqlite3");
+} catch (e) {
+  console.warn("⚠️ better-sqlite3 module not available, using fallback");
+  // Create a simple mock if better-sqlite3 is not available
+  Database = null;
+}
 
 // Determine database directory - use /tmp on Render (ephemeral but writable)
 // In production on Render, filesystem is read-only except /tmp
@@ -19,15 +32,37 @@ const dbPath = path.join(dbDir, "finance-buddy.db");
 console.log(`📂 Database path: ${dbPath}`);
 
 // Create / open database with error handling
-let db: Database.Database;
 try {
-  db = new Database(dbPath);
-  console.log("✅ SQLite database opened successfully");
+  if (Database) {
+    db = new Database(dbPath);
+    console.log("✅ SQLite database opened successfully");
+  } else {
+    throw new Error("better-sqlite3 not available");
+  }
 } catch (error) {
   console.error("❌ Failed to open SQLite database:", error);
   // Create in-memory database as fallback
   console.log("⚠️ Falling back to in-memory database (data will not persist!)");
-  db = new Database(":memory:");
+  if (Database) {
+    try {
+      db = new Database(":memory:");
+    } catch (memError) {
+      console.error("❌ Could not create in-memory database:", memError);
+      db = null;
+    }
+  } else {
+    db = null;
+  }
+}
+
+// If no database could be created, create a simple mock
+if (!db) {
+  console.log("⚠️ Creating mock database object");
+  db = {
+    prepare: () => ({ run: () => ({}), get: () => null, all: () => [] }),
+    pragma: () => {},
+    exec: () => {},
+  };
 }
 
 export { db };

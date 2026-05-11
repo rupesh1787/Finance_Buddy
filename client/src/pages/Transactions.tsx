@@ -32,6 +32,7 @@ export default function Transactions() {
   const transactions = useStore((state) => state.transactions);
   const deleteTransaction = useStore((state) => state.deleteTransaction);
   const updateTransaction = useStore((state) => state.updateTransaction);
+  const refreshSummary = useStore((state) => state.refreshSummary);
   const categories = useStore((state) => state.categories);
   const user = useStore((state) => state.user);
   const currency = user?.currency || 'USD';
@@ -126,6 +127,7 @@ export default function Transactions() {
       description: editDescription.trim() || editing.description,
       category: editCategory || editing.category,
     });
+    refreshSummary().catch(console.error);
     setEditing(null);
   };
 
@@ -301,6 +303,7 @@ export default function Transactions() {
                           aria-label="Delete transaction"
                           onClick={async () => {
                             await deleteTransaction(t.id);
+                            refreshSummary().catch(console.error);
                           }}
                         >
                           <Trash2 className="h-4 w-4" />

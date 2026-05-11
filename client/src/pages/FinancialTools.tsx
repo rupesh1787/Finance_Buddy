@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState, useMemo, useEffect } from "react";
 import { Calculator, Lightbulb, TrendingUp, TrendingDown, Sparkles, RefreshCcw, Clock, ChevronDown } from "lucide-react";
 import { useStore } from "@/lib/store";

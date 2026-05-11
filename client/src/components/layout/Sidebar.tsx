@@ -19,8 +19,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useEffect, useState, useCallback } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { CurrencyConverter } from "@/components/CurrencyConverter";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -30,7 +28,6 @@ interface SidebarProps {
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const [location, navigate] = useLocation();
   const logout = useStore((state) => state.logout);
-  const [converterOpen, setConverterOpen] = useState(false);
 
   // Close sidebar on escape key
   useEffect(() => {
@@ -53,6 +50,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
     { href: "/", label: "Dashboard", icon: LayoutDashboard, comingSoon: false },
     { href: "/transactions", label: "Transactions", icon: CreditCard, comingSoon: false },
     { href: "/money", label: "Money Transfer", icon: HandCoins, comingSoon: false },
+    { href: "/converter", label: "Converter", icon: ArrowRightLeft, comingSoon: false },
     { href: "/tools", label: "Tools", icon: Calculator, comingSoon: false },
     { href: "/budget", label: "Budget", icon: PieChart, comingSoon: true },
     { href: "/goals", label: "Savings Goals", icon: Target, comingSoon: true },
@@ -153,37 +151,6 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
             </div>
           );
         })}
-        
-        {/* Currency Converter - Quick Access */}
-        <Collapsible open={converterOpen} onOpenChange={setConverterOpen} className="mt-2">
-          <CollapsibleTrigger asChild>
-            <button
-              className={cn(
-                "flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:translate-x-1",
-                converterOpen 
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground" 
-                  : "text-sidebar-foreground/70"
-              )}
-            >
-              <ArrowRightLeft className="h-4 w-4 transition-transform duration-200" />
-              <span className="flex-1 text-left">Converter</span>
-              <ChevronDown className={cn(
-                "h-4 w-4 transition-transform duration-300",
-                converterOpen && "rotate-180"
-              )} />
-            </button>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="overflow-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 duration-300">
-            <div className="mt-2 mx-1 rounded-lg bg-sidebar-accent/50 p-2 border border-sidebar-border/50">
-              <CurrencyConverter 
-                compact 
-                onApply={(amount) => {
-                  toast.success(`Converted: ${amount.toFixed(2)}`);
-                }}
-              />
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
       </div>
 
         <div className="absolute bottom-4 left-0 right-0 px-4">

@@ -21,6 +21,7 @@ export function QuickAddTransaction() {
   const user = useStore((state) => state.user);
   
   const addTransaction = useStore((state) => state.addTransaction);
+  const refreshSummary = useStore((state) => state.refreshSummary);
   const categories = useStore((state) => state.categories);
   const lastCategory = useStore((state) => state.lastCategory);
   const setLastCategory = useStore((state) => state.setLastCategory);
@@ -51,17 +52,25 @@ export function QuickAddTransaction() {
 
   useEffect(() => {
     // Auto-select last used category for this type, or first available
-    const matchingLast = lastCategory && filteredCategories.find((c) => c.name === lastCategory);
-    if (matchingLast) {
-      setCategory(matchingLast.name);
+    if (filteredCategories.length === 0) return;
+    
+    // First priority: last category if it's still in the filtered list
+    if (lastCategory) {
+      const matchingLast = filteredCategories.find((c) => c.name === lastCategory);
+      if (matchingLast) {
+        setCategory(matchingLast.name);
+        return;
+      }
+    }
+
+    // Second priority: currently selected category if still valid
+    if (category && filteredCategories.find((c) => c.name === category)) {
       return;
     }
 
-    if (!category && filteredCategories.length > 0) {
-      setCategory(filteredCategories[0].name);
-    }
-  // Only re-run when the available options actually change, not on every render
-  }, [type, lastCategory, filteredCategories.length, category, filteredCategories]);
+    // Third priority: first available category
+    setCategory(filteredCategories[0].name);
+  }, [type, filteredCategories]);
 
   useEffect(() => {
     amountInputRef.current?.focus();
@@ -82,6 +91,9 @@ export function QuickAddTransaction() {
       date: new Date().toISOString(),
       description: description.trim() || category
     });
+
+    // Refresh dashboard summary so cards update immediately
+    refreshSummary().catch(console.error);
 
     if (category) setLastCategory(category);
 

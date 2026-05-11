@@ -10,8 +10,9 @@ export function OverviewCards() {
   const user = useStore((state) => state.user);
   const [expandedCard, setExpandedCard] = useState<'income' | 'expense' | null>(null);
   const currency = user?.currency || 'USD';
-  const income = summary?.totals.income ?? 0;
-  const expense = summary?.totals.expense ?? 0;
+  // Use current month data, not all-time totals
+  const income = summary?.currentMonth.income ?? 0;
+  const expense = summary?.currentMonth.expense ?? 0;
   const balance = summary?.totals.balance ?? 0;
   
   // Calculate month-over-month changes from server data

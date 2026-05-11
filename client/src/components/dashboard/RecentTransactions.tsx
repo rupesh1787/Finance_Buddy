@@ -27,6 +27,11 @@ export function RecentTransactions() {
         <CardDescription>Latest financial activity</CardDescription>
       </CardHeader>
       <CardContent>
+        {recentTransactions.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-8 animate-pulse">
+            No transactions yet. Add one to get started!
+          </p>
+        ) : (
         <div className="space-y-4">
           {recentTransactions.map((t) => (
             <div key={t.id} className="flex items-center justify-between group p-2 -mx-2 rounded-lg transition-all duration-200 hover:bg-muted/50 cursor-pointer">
@@ -53,6 +58,7 @@ export function RecentTransactions() {
             </div>
           ))}
         </div>
+        )}
       </CardContent>
     </Card>
   );

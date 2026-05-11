@@ -139,7 +139,7 @@ export default function Auth() {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSubmit(e as any);
     }
@@ -211,7 +211,7 @@ export default function Auth() {
                     setEmail(e.target.value);
                     if (errors.email) setErrors({ ...errors, email: undefined });
                   }}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   className={errors.email ? 'border-destructive focus-visible:ring-destructive' : ''}
                   disabled={isLoading}
                   autoComplete="email"
@@ -233,7 +233,7 @@ export default function Auth() {
                       setPassword(e.target.value);
                       if (errors.password) setErrors({ ...errors, password: undefined });
                     }}
-                    onKeyPress={handleKeyPress}
+                    onKeyDown={handleKeyPress}
                     className={errors.password ? 'border-destructive focus-visible:ring-destructive pr-10' : 'pr-10'}
                     disabled={isLoading}
                     autoComplete={isSignUp ? 'new-password' : 'current-password'}
@@ -275,7 +275,7 @@ export default function Auth() {
                         setConfirmPassword(e.target.value);
                         if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: undefined });
                       }}
-                      onKeyPress={handleKeyPress}
+                      onKeyDown={handleKeyPress}
                       className={errors.confirmPassword ? 'border-destructive focus-visible:ring-destructive pr-10' : 'pr-10'}
                       disabled={isLoading}
                       autoComplete="new-password"

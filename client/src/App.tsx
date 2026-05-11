@@ -8,6 +8,7 @@ import Dashboard from "@/pages/Dashboard";
 import Transactions from "@/pages/Transactions";
 import MoneyTransfer from "@/pages/MoneyTransfer";
 import FinancialTools from "@/pages/FinancialTools";
+import CurrencyConverterPage from "@/pages/CurrencyConverterPage";
 import Settings from "@/pages/Settings";
 import Auth from "@/pages/Auth";
 import { useStore } from "@/lib/store";
@@ -42,6 +43,9 @@ function Router() {
       </Route>
       <Route path="/tools">
         <ProtectedRoute component={FinancialTools} />
+      </Route>
+      <Route path="/converter">
+        <ProtectedRoute component={CurrencyConverterPage} />
       </Route>
       
       {/* Placeholder pages for navigation items */}
@@ -95,7 +99,14 @@ function App() {
   }, [setUser]);
 
   if (!isInitialized) {
-    return null; // Or a loading spinner if desired
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-muted/40">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+          <p className="text-sm text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (

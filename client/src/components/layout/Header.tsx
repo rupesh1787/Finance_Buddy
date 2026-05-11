@@ -7,7 +7,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { applyTheme, getStoredTheme, toggleTheme as toggleThemeMode } from "@/lib/theme";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
-import { UtilityPanel } from "@/components/UtilityPanel";
+import { AIAssistant } from "@/components/UtilityPanel";
 import { displayAmount } from "@/lib/currency";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -272,7 +272,7 @@ export function Header({ title, onMenuClick }: { title: string; onMenuClick?: ()
             )}
           </Button>
 
-          <UtilityPanel />
+          <AIAssistant />
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

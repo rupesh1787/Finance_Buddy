@@ -12,12 +12,8 @@ export default function Dashboard() {
     <Layout title="Dashboard">
       {/* PRIMARY ACTION + RECENT ACTIVITY SIDE BY SIDE */}
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="max-w-2xl">
-          <QuickAddTransaction />
-        </div>
-        <div>
-          <RecentTransactions />
-        </div>
+        <QuickAddTransaction />
+        <RecentTransactions />
       </div>
 
       {/* BALANCE OVERVIEW */}

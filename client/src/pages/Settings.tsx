@@ -21,6 +21,7 @@ export default function Settings() {
   const updateUser = useStore((state) => state.updateUser);
   const setCurrency = useStore((state) => state.setCurrency);
   const setMonthlySpendingLimit = useStore((state) => state.setMonthlySpendingLimit);
+  const refreshSummary = useStore((state) => state.refreshSummary);
   const { toast } = useToast();
 
   const [name, setName] = useState(user?.name || "");
@@ -44,13 +45,14 @@ export default function Settings() {
     toast({ title: "Currency updated", description: `Now showing balances in ${currency}.` });
   };
 
-  const handleLimitSave = () => {
+  const handleLimitSave = async () => {
     const value = Number(spendingLimit);
     if (Number.isNaN(value) || value <= 0) {
       toast({ title: "Invalid limit", description: "Enter a positive number.", variant: "destructive" });
       return;
     }
-    setMonthlySpendingLimit(value);
+    await setMonthlySpendingLimit(value);
+    await refreshSummary();
     toast({ title: "Limit saved", description: `Monthly spending limit set to ${value}.` });
   };
 
